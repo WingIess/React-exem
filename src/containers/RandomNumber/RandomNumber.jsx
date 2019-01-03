@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import axios from '../../axios/firebase-axios';
+import Table from '../../components/table/Table';
 
 class RandomNumber extends Component {
     state = {
@@ -12,14 +13,6 @@ class RandomNumber extends Component {
     };
 
     render() {
-        const table = (
-            <div className="table">
-                <div>player: {this.state.playerScore}</div>
-                <input type="text" value={this.state.player} disabled />
-                <div>AI: {this.state.aiScore}</div>
-                <input type="text" value={this.state.ai} disabled />
-            </div>
-        );
         return (
             <Fragment>
                 <input
@@ -31,7 +24,11 @@ class RandomNumber extends Component {
                 <button style={{ marginTop: 20 }} className="center" onClick={this.postScoreHandler}>
                     submit score
                 </button>
-                {table}
+                <Table
+                    player={this.state.player}
+                    ai={this.state.ai}
+                    playerScore={this.state.playerScore}
+                    aiScore={this.state.aiScore} />
                 <button className="center" onClick={this.randomNumberHandler}>
                     Roll the numbers
                 </button>
@@ -92,8 +89,8 @@ class RandomNumber extends Component {
             }
         }
         axios.post('/scores.json', scores)
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+            .then(response => console.log(response))
+            .catch(error => console.log(error));
     }
 }
 
