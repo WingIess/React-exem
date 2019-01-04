@@ -4,11 +4,24 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 60rem;
-    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
     border: 1px solid rgba(0,0,0,.5);
     border-radius: .6rem;
     padding: 2rem;
-    box-shadow: 0 1rem 1rem rgba(0,0,0,.2);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    background-color: white;
+    span {
+        grid-column: 1 / -1; 
+        justify-self: end;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+    }
+
+    div {
+        margin-top: 1rem;
+    }
     
     div:nth-of-type(odd) {
         justify-self: start;
