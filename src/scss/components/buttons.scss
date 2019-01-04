@@ -12,4 +12,14 @@
         outline: none;
         border: 0px;
     }
+
+    &.leader-board-btn {
+        background: rgba(blue, .4);
+        border: 1px solid blue;
+        border-radius: 1.2rem;
+        height: 3rem;
+        width: 12rem;
+        color: white;
+        font-family: sans-serif;
+    }
 }
