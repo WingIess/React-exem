@@ -1,2 +1,9 @@
-@import 'components/random-numbers';
-@import 'components/error';
+@import 'abstracts/variables.scss';
+@import 'abstracts/mixins.scss';
+
+@import 'base/base.scss';
+@import 'base/fonts.scss';
+
+@import 'components/random-numbers.scss';
+@import 'components/error.scss';
+@import 'components/leader-board.scss';
