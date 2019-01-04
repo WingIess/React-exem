@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from '../../axios/firebase-axios';
 import Table from '../../components/Table/Table';
 import ScoreSubmit from '../../components/ScoreSubmit/ScoreSubmit';
+// import LeaderBoard from '../../components/LeaderBoard/LeaderBoard';
 
 class RandomNumber extends Component {
     state = {
@@ -12,19 +13,33 @@ class RandomNumber extends Component {
         aiScore: 0,
         score: '',
         submitError: false,
-        roundsLeft: 10
+        roundsLeft: 10,
+        bestScores: [],
+        leaderBoardShow: false
     };
 
-    componentDidMount() {
-        axios
-            .get('roundsPlayed.json')
-            .then(response => this.setState({ roundsWillPlay: response }))
-            .catch(error => console.log(error));
+    async componentDidMount() {
+        try {
+            const responseOne = await axios.get('roundsPlayed.json');
+            console.log(responseOne.data);
+            const responseTwo = await axios.get('scores.json');
+            console.log(responseTwo.data);
+            const scoresObject = responseTwo.data;
+            const scores = Object.keys(scoresObject).map(key => ({
+                name: scoresObject[key].playerName,
+                score: scoresObject[key].playerScore - scoresObject[key].aiScore
+            }));
+            console.log(scores);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     render() {
         return (
-            <Fragment>
+            <div className="random-number">
+                <div className="btn leader-board-btn">Leader board</div>
+                {/* {this.state.leaderBoardShow ? <LeaderBoard playerScores={this.state.bestScores} /> : null} */}
                 <ScoreSubmit
                     error={this.state.submitError}
                     change={this.playerNameHandler}
@@ -45,7 +60,7 @@ class RandomNumber extends Component {
                     Roll the numbers
                 </button>
                 <div className="score-board">{this.state.score}</div>
-            </Fragment>
+            </div>
         );
     }
 
@@ -99,11 +114,9 @@ class RandomNumber extends Component {
 
     postScoreHandler = () => {
         const scores = {
-            player: {
-                playerName: this.state.playerName,
-                playerScore: this.state.playerScore,
-                aiScore: this.state.aiScore
-            }
+            playerName: this.state.playerName,
+            playerScore: this.state.playerScore,
+            aiScore: this.state.aiScore
         };
         axios
             .post('/scores.json', scores)
