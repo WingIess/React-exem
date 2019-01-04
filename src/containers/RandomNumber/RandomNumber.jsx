@@ -28,7 +28,8 @@ class RandomNumber extends Component {
                     player={this.state.player}
                     ai={this.state.ai}
                     playerScore={this.state.playerScore}
-                    aiScore={this.state.aiScore} />
+                    aiScore={this.state.aiScore}
+                />
                 <button className="center" onClick={this.randomNumberHandler}>
                     Roll the numbers
                 </button>
@@ -87,11 +88,12 @@ class RandomNumber extends Component {
                 playerScore: this.state.playerScore,
                 aiScore: this.state.aiScore
             }
-        }
-        axios.post('/scores.json', scores)
+        };
+        axios
+            .post('/scores.json', scores)
             .then(response => console.log(response))
             .catch(error => console.log(error));
-    }
+    };
 }
 
 export default RandomNumber;

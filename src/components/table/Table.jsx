@@ -1,4 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+    player: PropTypes.number.isRequired,
+    playerScore: PropTypes.number.isRequired,
+    ai: PropTypes.number.isRequired,
+    aiScore: PropTypes.number.isRequired
+};
 
 const table = (props) => {
     return (
@@ -10,5 +18,7 @@ const table = (props) => {
         </div>
     )
 }
+
+table.propTypes = propTypes;
 
 export default table;
