@@ -11,12 +11,20 @@
     padding: 2rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
     background-color: white;
+    
     span {
         grid-column: 1 / -1; 
         justify-self: end;
         margin-bottom: 1rem;
         padding: 1rem;
         cursor: pointer;
+        grid-row: 1 / 2;
+    }
+
+    .title {
+        justify-self: center;
+        font-size: 3rem;
+        font-family: sans-serif;
     }
 
     div {

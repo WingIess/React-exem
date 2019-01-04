@@ -24,6 +24,7 @@ class LeaderBoard extends Component {
         return (
             <div className="leader-board">
             <span onClick={this.props.close} className="fas fa-times"></span>
+            <span className="title">Leader Board</span>
             {this.state.bestScores.map((score, index) => <PlayerScore name={this.state.bestScores[index].name} score={this.state.bestScores[index].score} key={index} />)}
             </div>
         );

@@ -111,16 +111,18 @@ class RandomNumber extends Component {
         }
     };
 
-    postScoreHandler = () => {
+    postScoreHandler = async () => {
         const scores = {
             playerName: this.state.playerName,
             playerScore: this.state.playerScore,
             aiScore: this.state.aiScore
         };
-        axios
-            .post('/scores.json', scores)
-            .then(response => this.setState({ submitError: false }))
-            .catch(error => this.setState({ submitError: true }));
+        try {
+            await axios.post('/scores.json', scores)
+            this.setState({ submitError: false })
+        } catch (error) {
+            this.setState({ submitError: true })
+        }
     };
 }
 
