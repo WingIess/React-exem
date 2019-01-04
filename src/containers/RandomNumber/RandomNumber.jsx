@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../axios/firebase-axios';
 import Table from '../../components/Table/Table';
 import ScoreSubmit from '../../components/ScoreSubmit/ScoreSubmit';
-// import LeaderBoard from '../../components/LeaderBoard/LeaderBoard';
+import LeaderBoard from '../LeaderBoard/LeaderBoard';
 
 class RandomNumber extends Component {
     state = {
@@ -14,32 +14,31 @@ class RandomNumber extends Component {
         score: '',
         submitError: false,
         roundsLeft: 10,
-        bestScores: [],
         leaderBoardShow: false
     };
 
     async componentDidMount() {
         try {
-            const responseOne = await axios.get('roundsPlayed.json');
-            console.log(responseOne.data);
-            const responseTwo = await axios.get('scores.json');
-            console.log(responseTwo.data);
-            const scoresObject = responseTwo.data;
-            const scores = Object.keys(scoresObject).map(key => ({
-                name: scoresObject[key].playerName,
-                score: scoresObject[key].playerScore - scoresObject[key].aiScore
-            }));
-            console.log(scores);
+            const roundsLeft = await axios.get('roundsPlayed.json');
+            this.setState({ roundsLeft });
         } catch (err) {
             console.log(err);
         }
     }
 
+    leaderBoardToggleHandler = () => {
+        this.setState(prevState => ({
+            leaderBoardShow: !prevState.leaderBoardShow
+        }));
+    };
+
     render() {
         return (
             <div className="random-number">
-                <div className="btn leader-board-btn">Leader board</div>
-                {/* {this.state.leaderBoardShow ? <LeaderBoard playerScores={this.state.bestScores} /> : null} */}
+                <div onClick={this.leaderBoardToggleHandler} className="btn leader-board-btn">
+                    Leader board
+                </div>
+                {this.state.leaderBoardShow ? <LeaderBoard close={this.leaderBoardToggleHandler} /> : null}
                 <ScoreSubmit
                     error={this.state.submitError}
                     change={this.playerNameHandler}
