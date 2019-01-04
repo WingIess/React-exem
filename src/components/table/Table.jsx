@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -8,23 +8,16 @@ const propTypes = {
     aiScore: PropTypes.number.isRequired
 };
 
-class table extends Component {
-
-    async componentDidMount() {
-        
-    }
-
-    render() {
-        return (
-            <div className="table">
-                <div>player: {this.props.playerScore}</div>
-                <input type="text" value={this.props.player} disabled />
-                <div>AI: {this.props.aiScore}</div>
-                <input type="text" value={this.props.ai} disabled />
-            </div>
-        )
-    }
-}
+const table = (props) => {
+    return (
+        <div className="table">
+            <div>player: {props.playerScore}</div>
+            <div>{props.player}</div>
+            <div>AI: {props.aiScore}</div>
+            <div>{props.ai}</div>
+        </div>
+    );
+};
 
 table.propTypes = propTypes;
 

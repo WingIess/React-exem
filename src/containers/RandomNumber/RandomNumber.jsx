@@ -20,7 +20,7 @@ class RandomNumber extends Component {
     async componentDidMount() {
         try {
             const roundsLeft = await axios.get('roundsPlayed.json');
-            this.setState({ roundsLeft });
+            this.setState({ roundsLeft: roundsLeft.data });
         } catch (err) {
             console.log(err);
         }
