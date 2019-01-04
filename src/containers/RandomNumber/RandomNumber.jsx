@@ -16,8 +16,9 @@ class RandomNumber extends Component {
     };
 
     componentDidMount() {
-        axios.get('roundsPlayed.json')
-            .then(response => this.setState({roundsWillPlay: response}))
+        axios
+            .get('roundsPlayed.json')
+            .then(response => this.setState({ roundsWillPlay: response }))
             .catch(error => console.log(error));
     }
 
@@ -36,7 +37,11 @@ class RandomNumber extends Component {
                     playerScore={this.state.playerScore}
                     aiScore={this.state.aiScore}
                 />
-                <button className="center" onClick={this.randomScoreHandler} disabled={this.state.roundsLeft === 0 ? true : false} >
+                <button
+                    className="center"
+                    onClick={this.randomScoreHandler}
+                    disabled={this.state.roundsLeft === 0 ? true : false}
+                >
                     Roll the numbers
                 </button>
                 <div className="score-board">{this.state.score}</div>
@@ -48,9 +53,9 @@ class RandomNumber extends Component {
         this.setState(prevState => {
             return {
                 roundsLeft: --prevState.roundsLeft
-            }
-        })
-    }
+            };
+        });
+    };
 
     randomScoreHandler = () => {
         const player = Math.floor(Math.random() * Math.floor(10) + 1);
@@ -69,15 +74,14 @@ class RandomNumber extends Component {
         }
         if (player > ai) {
             score = 'player wins';
-            this.setState(prevState => {
-                return {
-                    player,
-                    ai,
-                    playerScore: prevState.playerScore + 1,
-                    score
-                };
-            });
-        } else {
+            this.setState(prevState => ({
+                player,
+                ai,
+                playerScore: prevState.playerScore + 1,
+                score
+            }));
+        }
+        if (player === ai) {
             this.setState(prevState => ({
                 player,
                 ai,
@@ -103,8 +107,8 @@ class RandomNumber extends Component {
         };
         axios
             .post('/scores.json', scores)
-            .then(response => this.setState({submitError: false}))
-            .catch(error => this.setState({submitError: true}));
+            .then(response => this.setState({ submitError: false }))
+            .catch(error => this.setState({ submitError: true }));
     };
 }
 
