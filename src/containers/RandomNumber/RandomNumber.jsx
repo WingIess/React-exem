@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from '../../axios/firebase-axios';
-import Table from '../../components/table/Table';
+import Table from '../../components/Table/Table';
+import ScoreSubmit from '../../components/ScoreSubmit/ScoreSubmit';
 
 class RandomNumber extends Component {
     state = {
@@ -9,28 +10,33 @@ class RandomNumber extends Component {
         playerName: 'player name',
         playerScore: 0,
         aiScore: 0,
-        score: ''
+        score: '',
+        submitError: false,
+        roundsLeft: 10
     };
+
+    componentDidMount() {
+        axios.get('roundsPlayed.json')
+            .then(response => this.setState({roundsWillPlay: response}))
+            .catch(error => console.log(error));
+    }
 
     render() {
         return (
             <Fragment>
-                <input
-                    className="center"
-                    onChange={e => this.playerNameHandler(e)}
-                    type="text"
-                    placeholder={this.state.playerName}
+                <ScoreSubmit
+                    error={this.state.submitError}
+                    change={this.playerNameHandler}
+                    name={this.state.playerName}
+                    submit={this.postScoreHandler}
                 />
-                <button style={{ marginTop: 20 }} className="center" onClick={this.postScoreHandler}>
-                    submit score
-                </button>
                 <Table
                     player={this.state.player}
                     ai={this.state.ai}
                     playerScore={this.state.playerScore}
                     aiScore={this.state.aiScore}
                 />
-                <button className="center" onClick={this.randomNumberHandler}>
+                <button className="center" onClick={this.randomScoreHandler} disabled={this.state.roundsLeft === 0 ? true : false} >
                     Roll the numbers
                 </button>
                 <div className="score-board">{this.state.score}</div>
@@ -38,7 +44,15 @@ class RandomNumber extends Component {
         );
     }
 
-    randomNumberHandler = () => {
+    roundsHandler = () => {
+        this.setState(prevState => {
+            return {
+                roundsLeft: --prevState.roundsLeft
+            }
+        })
+    }
+
+    randomScoreHandler = () => {
         const player = Math.floor(Math.random() * Math.floor(10) + 1);
         const ai = Math.floor(Math.random() * Math.floor(10) + 1);
 
@@ -70,6 +84,7 @@ class RandomNumber extends Component {
                 score
             }));
         }
+        this.roundsHandler();
     };
 
     playerNameHandler = event => {
@@ -79,9 +94,6 @@ class RandomNumber extends Component {
     };
 
     postScoreHandler = () => {
-        // axios.request.use(request => {
-        //     console.log(request);
-        // })
         const scores = {
             player: {
                 playerName: this.state.playerName,
@@ -91,8 +103,8 @@ class RandomNumber extends Component {
         };
         axios
             .post('/scores.json', scores)
-            .then(response => console.log(response))
-            .catch(error => console.log(error));
+            .then(response => this.setState({submitError: false}))
+            .catch(error => this.setState({submitError: true}));
     };
 }
 
